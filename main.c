@@ -10,7 +10,6 @@ char* removeP() {
 	
 	
 	char message[100] = "";									// Variável para armazenar a mensagem criptografada (comporta até 99 caracteres + "\0"
-	char novo[100] = "";									// Variável que vai receber a mensagem sem os P's
 	int i;													// Variável de controle
 	printf("Digite sua mensagem criptografada:\n");
 	
@@ -18,16 +17,24 @@ char* removeP() {
 	if (fgets(message, sizeof(message), stdin) != NULL) {	// Capta dados do teclado do usuário, armazenando na variável 'message'
 		int len = strlen(message);							// Variável que armazena o tamanho da mensagem
 		
+		char* novo = (char*)malloc(len / 2 + 1);			// Não entendi esse código, sei que aloca memória para que possa editar a string depois
+		
+		if (novo == NULL) {
+			printf("Erro ao alocar memória\n");				// Caso não haja sucesso ao atribuir 'novo', essa mensagem será exibida
+			exit(1);
+		}
+		
+		int j = 0;											// Variável utilizada para indicar a posição de 'novo' ao receber os caracteres específicos de 'message'
 		for(i = 1; i < len; i = i + 2) {
-			char temp[2] = {message[i], '\0'};				// Transforma o caractere de message[i] em string ao juntar com '\0'
-			strcat(novo, temp);								// Concatena duas strings: novo e temp. Ou seja, novo = novo + temp
+			novo[j++] = message[i];							// Copia o caractere da posição desejada de 'message' para novo e depois incrementa 'j'
 			
 			if (message[i + 1] == ' ') {
-				strcat(novo, " ");							// Concatena um espaço à string, caso o próximo caractere for um espaço
+				novo[j++] = ' ';							// Adiciona um espaço se o próximo caractere for um espaço
 				i++;										// Incrementa i para que a iteração se mantenha sempre no índice de caracteres desejados
 			}
 			
 		}
+		novo[j] = '\0';										// Acrescenta um caractere no último índice de 'novo' para indicar o final da string
 		//printf("%s", novo);
 		return novo;
 	} else {
@@ -39,12 +46,17 @@ char* removeP() {
 	
 }
 
+void rot13(char* str) {
+	
+}
+
 char* decifraMsg() {
 	char* msg = removeP();
 	
 }
 
 int main(int argc, char *argv[]) {
-	
+	char* love = removeP();
+	printf("%s", love);
 	return 0;
 }

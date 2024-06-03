@@ -5,6 +5,7 @@
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
+// Função para remover os P's definida, para utilizá-la em outro local, basta chamar por 'removeP()' e assim teremos a string armazenada em 'novo'
 char* removeP() {
 	setlocale(LC_ALL, "Portuguese");
 	
@@ -41,22 +42,35 @@ char* removeP() {
 		printf("Mensagem indefinida!");
 		return NULL;
 	}
-	/* Função para remover os P's definida, para utilizá-la em outro local, 
-	basta chamar por 'removeP()' e assim teremos a string armazenada em 'novo'*/
-	
 }
 
+// Função que executa a decodificação em ROT-13
 void rot13(char* str) {
-	
+	int i;													// Variável de controle
+	for (i = 0; str[i] != '\0'; i++) {						// O loop só executa enquanto o caractere não for terminador nulo
+		char c = str[i];									// Variável para armazenar o caractere respectivo ao índice 'i' de str
+		if (c >= 'A' && c <= 'Z') {							// Condicional que determina se 'c' está entre 'A' e 'Z' (maiúsculas)
+			str[i] = (c - 'A' + 13) % 26 + 'A';
+		} else if (c >= 'a' && c <= 'z') {					// Condicional que determina se 'c' está entre 'A' e 'Z' (minúsculas)
+			str[i] = (c - 'a' + 13) % 26 + 'a';
+		}
+	}
 }
 
 char* decifraMsg() {
 	char* msg = removeP();
+	if (msg != NULL) {
+		rot13(msg);
+	}
 	
+	return msg;
 }
 
 int main(int argc, char *argv[]) {
-	char* love = removeP();
-	printf("%s", love);
+	char* decifra = decifraMsg();
+	if (decifra != NULL) {
+		printf("Mensagem decodificada: %s\n", decifra);
+		free(decifra);
+	}
 	return 0;
 }
